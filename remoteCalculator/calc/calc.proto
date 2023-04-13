@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+option go_package = "github.com/lao-tseu-is-alive/go-grpc-experiments/remoteCalculator/protobuf";
+
+package calc;
+
+message CalcRequest {
+   double num1 = 1;
+   double num2 = 2;
+   OpType operation = 3;
+
+   enum OpType {
+     Add = 0;
+     Subtract = 1;
+     Multiply = 2;
+     Divide = 3;
+   }
+}
+
+message CalcResponse {
+  double result = 1;
+  bool error = 2;
+}
+
+service CalcService {
+  rpc Calc(CalcRequest) returns (CalcResponse) {}
+}
