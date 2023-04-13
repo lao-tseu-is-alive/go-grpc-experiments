@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option go_package = "github.com/lao-tseu-is-alive/go-grpc-experiments/remoteCalculator/protobuf";
+option go_package = "github.com/lao-tseu-is-alive/go-grpc-experiments/remoteCalculator/calc";
 
 package calc;
 

@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.2.0
 // - protoc             v4.22.2
-// source: remoteCalculator/protobuf/calc.proto
+// source: remoteCalculator/calc/calc.proto
 
 package calc
 
@@ -101,5 +101,5 @@ var CalcService_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "remoteCalculator/protobuf/calc.proto",
+	Metadata: "remoteCalculator/calc/calc.proto",
 }
