@@ -1,7 +1,7 @@
 # go-grpc-experiments
 some code to experiment with gRPC in Go
 
-### how to test the gRPC calc example
+### How to try the gRPC calc example
 
 go the base directory of the project, and run from your shell :
 
@@ -15,3 +15,10 @@ open another terminal and run the client
 
     scripts/protobuf_generate.sh
     
+
+### More info
+
++ [gRPC Go basic tutorial](https://grpc.io/docs/languages/go/basics/)
++ [Protocol Buffers doc](https://protobuf.dev/)
++ [Protocol Buffer Compiler Installation](https://grpc.io/docs/protoc-installation/)
++ [Evans: universal gRPC client](https://github.com/ktr0731/evans)

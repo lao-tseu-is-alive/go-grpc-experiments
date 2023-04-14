@@ -10,6 +10,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/metadata"
+	"google.golang.org/grpc/reflection"
 	"google.golang.org/grpc/status"
 	"log"
 	"net"
@@ -145,6 +146,9 @@ func main() {
 		l:                              l,
 		token:                          rootToken,
 	})
+	// next line allows to use evans in repl mode https://github.com/ktr0731/evans/releases
+	// as a universal gRPC client to explore our server
+	reflection.Register(grpcServer)
 	l.Printf("INFO: 'will start server %s'", listenAddr)
 	err = grpcServer.Serve(netListener)
 	if err != nil {
