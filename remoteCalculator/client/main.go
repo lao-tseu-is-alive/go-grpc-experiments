@@ -23,19 +23,21 @@ const (
 	useTLS               = true
 	certificateAuthority = "ca.crt"
 	defaultTimeoutSecond = 3
-	defaultAuthTOKEN     = "14d3d4de9273fb1b5cc33e6bae2225f115885d028ddfb82555172188f9dee91c"
 )
 
 // main is client to call the gRPC calc server, just try this from your shell :  go run remoteCalculator/client/main.go -num1 2 -num2 2 -operation M
 func main() {
 	port := flag.Int("port", defaultPort, "the address to connect to")
 	serverIP := flag.String("server-ip", defaultServerIp, "The server Ip address")
+	securityToken := flag.String("token", "", "The server Authorization header token")
 	num1 := flag.Float64("num1", 0, "first operand number")
 	num2 := flag.Float64("num2", 0, "second operand number")
 	op := flag.String("operation", "Add", "Operation to apply to the numbers [Add|Subtract|Multiply|Divide]")
 	flag.Parse()
 	l := log.New(os.Stdout, fmt.Sprintf("%s ", APP), log.Ldate|log.Ltime|log.Lshortfile)
-
+	if len(*securityToken) < 2 {
+		l.Fatalf("💥💥 error i need the Authorization -token parameter from the server")
+	}
 	listenAddr := fmt.Sprintf("%s:%d", *serverIP, *port)
 	l.Printf("INFO: 'Starting %s version:%s. Will try to connect to %s'", APP, VERSION, listenAddr)
 	var opts []grpc.DialOption
@@ -79,7 +81,7 @@ func main() {
 	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeoutSecond*time.Second)
 	defer cancel()
 	// Anything linked to this variable will transmit request headers.
-	md := metadata.New(map[string]string{"x-request-id": "req-123"})
+	md := metadata.New(map[string]string{"Authorization": *securityToken})
 	ctx = metadata.NewOutgoingContext(ctx, md)
 
 	// Anything linked to this variable will fetch response headers.

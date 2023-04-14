@@ -22,6 +22,8 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type CalcServiceClient interface {
+	// Calc handles the gRPC CalcRequest by doing basic math operation on num1 and num2
+	// Returns the result in CalcResponseRequests if there was a problem error will be true
 	Calc(ctx context.Context, in *CalcRequest, opts ...grpc.CallOption) (*CalcResponse, error)
 }
 
@@ -46,6 +48,8 @@ func (c *calcServiceClient) Calc(ctx context.Context, in *CalcRequest, opts ...g
 // All implementations must embed UnimplementedCalcServiceServer
 // for forward compatibility
 type CalcServiceServer interface {
+	// Calc handles the gRPC CalcRequest by doing basic math operation on num1 and num2
+	// Returns the result in CalcResponseRequests if there was a problem error will be true
 	Calc(context.Context, *CalcRequest) (*CalcResponse, error)
 	mustEmbedUnimplementedCalcServiceServer()
 }

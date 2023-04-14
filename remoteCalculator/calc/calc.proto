@@ -23,5 +23,7 @@ message CalcResponse {
 }
 
 service CalcService {
+  // Calc handles the gRPC CalcRequest by doing basic math operation on num1 and num2
+  // Returns the result in CalcResponseRequests if there was a problem error will be true
   rpc Calc(CalcRequest) returns (CalcResponse) {}
 }

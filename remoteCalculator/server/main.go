@@ -95,15 +95,19 @@ func CheckHeaderInterceptor(l *log.Logger, token string) grpc.UnaryServerInterce
 			return nil, status.Error(codes.Internal, "Error while reading the context")
 		}
 
-		if len(headers.Get("authorization")) == 0 {
-			l.Println("🤔🤔 WARN: in CheckHeaderInterceptor did not find authorization header !")
-			// return nil, status.Error(codes.Unauthenticated, "Expected authorization header")
-			//for now just accept this unauthorized call :-)
-			return handler(ctx, req)
+		if len(headers.Get("Authorization")) == 0 {
+			l.Println("🔑🔑 🤔🤔 WARN: in CheckHeaderInterceptor did not find Authorization header !")
+			return nil, status.Error(codes.Unauthenticated, "Expected authorization header")
 		}
 
-		//TODO : also add check for valid token when authorization header was found
-
+		//check for valid token when authorization header was found
+		authToken := headers.Get("Authorization")
+		l.Printf("INFO: Authorization token: %s", authToken[0])
+		if token != authToken[0] {
+			l.Println("🔑🔑 🔒🔒 🤔🤔 WARN: in CheckHeaderInterceptor Authorization token is invalid !")
+			return nil, status.Error(codes.Unauthenticated, "Invalid authorization token")
+		}
+		l.Println("🔑🔑 🔓🔓 😃😃 INFO: in CheckHeaderInterceptor Authorization token is correct !")
 		return handler(ctx, req)
 	}
 }
@@ -117,6 +121,8 @@ func main() {
 	l.Printf("INFO: 'Starting %s version:%s server on %s'", APP, VERSION, listenAddr)
 
 	rootToken := TokenGenerator(defaultTokenSize)
+
+	l.Printf("INFO: rootToken : %s ", rootToken)
 
 	netListener, err := net.Listen("tcp", listenAddr)
 	if err != nil {
